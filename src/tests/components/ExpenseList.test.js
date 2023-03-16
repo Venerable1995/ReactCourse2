@@ -1,0 +1,16 @@
+import React from "react";
+import { shallow } from "enzyme";
+import { ExpenseList } from "../../components/ExpenseList";
+import expenses from "../fixtures/expenses";
+
+test('should render expense list with expenses',()=>{
+    const wrapper=shallow(<ExpenseList  expenses ={expenses}/>)
+    expect(wrapper).toMatchSnapshot()
+})
+test('should render expenselist with empty message',()=>{
+   
+    const wrapper=shallow(<ExpenseList   expenses ={[[]]}/>)
+    expect(wrapper).toMatchSnapshot()
+
+})
+// warning for not having key in empty expenses fixed by adding condition if empty expense put 0
