@@ -1,4 +1,3 @@
-import uuid from'uuid';
 import  database from '../firebase/firebase'
 export const addExpense=(expense)=>({
     type:'ADD_EXPENSE',
@@ -30,3 +29,51 @@ export const editExpense =  (id,updates)=>({
     id,
     updates
 })
+export const setExpenses = ((expenses)=>({
+    type: 'SET_EXPENSES',
+    expenses
+}))
+export const startSetExpenses= () => {   
+    return ( dispatch ) =>{
+      return database.ref('expenses').once('value').then((snapshot)=>{
+        const expenses = []
+snapshot.forEach((childSnapShot)=>{
+    expenses.push({ 
+        id:childSnapShot.key ,
+        ...childSnapShot.val()
+    })
+})
+        dispatch(setExpenses(expenses))
+     })
+
+ }
+}
+export const startRemoveExpenses= ({ id } = {}) => {   
+    return ( dispatch ) =>{
+      return database.ref(`expenses/${id}`).remove().then(()=>{
+      dispatch(removeExpense({ id }))
+     })
+
+ }
+}
+// const startSetExpenses = (dispatch) => {
+//     return (dispatch) => {
+//       const dbRef = ref(db)
+//       return get(child(dbRef, 'expense')).then((snapshot) => {
+//         if (snapshot.exists()) {
+//           const expenses = []
+//           snapshot.forEach((childSnapshot) => {
+//             expenses.push({
+//               id: childSnapshot.key,
+//               ...childSnapshot.val(),
+//             });
+//           });
+//           dispatch(setExpenses(expenses))
+//         } else {
+//           console.log("No data available");
+//         }
+//       }).catch((error) => {
+//         console.error(error);
+//       });
+//     }
+//   }
