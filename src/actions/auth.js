@@ -1,3 +1,4 @@
+import { Redirect } from "react-router-dom"
 import { firebase ,  googleAuthProvider } from "../firebase/firebase"
 export const login=(uid)=>({
     type:'LOGIN',
@@ -13,6 +14,7 @@ export const logout=()=>({
 })
 export const startLogOut = () =>{
     return () =>{
+        
         return firebase.auth().signOut()
     }
 }
